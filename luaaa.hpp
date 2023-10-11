@@ -21,6 +21,12 @@
 #define LUAAA_CHECK_CONSTRUCTOR_NAME_CONFLICT 1
 #endif
 
+/// to disable luaL_setfuncs and other functions present in newer versions of lua (>= 5.2)
+/// currently useful for when using luajit, which also defines this function ahead of its base lua version (5.1)
+#ifndef LUAAA_NO_DEFINES
+#define LUAAA_NO_DEFINES 0
+#endif
+
 extern "C"
 {
 #include "lua.h"
@@ -28,7 +34,7 @@ extern "C"
 #include "lauxlib.h"
 }
 
-#if !defined LUA_VERSION_NUM || LUA_VERSION_NUM <= 501
+#if LUAAA_NO_DEFINES == 0 !defined LUA_VERSION_NUM || LUA_VERSION_NUM <= 501
 inline void luaL_setfuncs(lua_State *L, const luaL_Reg *l, int nup) {
     luaL_checkstack(L, nup + 1, "too many upvalues");
     for (; l->name != nullptr; l++) {
