@@ -34,7 +34,7 @@ extern "C"
 #include "lauxlib.h"
 }
 
-#if LUAAA_NO_DEFINES == 0 !defined LUA_VERSION_NUM || LUA_VERSION_NUM <= 501
+#if LUAAA_NO_DEFINES == 0 && (!defined LUA_VERSION_NUM || LUA_VERSION_NUM <= 501)
 inline void luaL_setfuncs(lua_State *L, const luaL_Reg *l, int nup) {
     luaL_checkstack(L, nup + 1, "too many upvalues");
     for (; l->name != nullptr; l++) {
